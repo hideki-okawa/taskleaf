@@ -12,11 +12,18 @@ class TasksController < ApplicationController
   end
 
   def create
-    task = Task.new(task_params)
-    task.save!
-    # 一覧画面に繊維
-    # flash[:notice]にメッセージを付与
-    redirect_to tasks_url, notice: "タスク「#{task.name}」を登録しました。"
+    @task = Task.new(task_params)
+    
+    if @task.save
+      # taskの登録に成功したとき
+      # 一覧画面に遷移
+      # flash[:notice]にメッセージを付与
+      redirect_to @task, notice: "タスク「#{@task.name}」を登録しました。"
+    else
+      # taskの登録に失敗したとき
+      # 新規登録画面に戻す
+      render :new
+    end
   end
 
   def edit
